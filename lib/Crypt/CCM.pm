@@ -29,7 +29,7 @@ sub new {
         taglen => $args{'-tag_length'} || 128/8,
     }, $class;
 
-    $args{'-cipher'} |= 'Crypt::Rijndael';
+    $args{'-cipher'} ||= 'Crypt::Rijndael';
     if (exists $args{'-key'}) {
         eval "require $args{'-cipher'}";
         if ($@) {
@@ -212,7 +212,7 @@ sub _format_associated_data {
 
     my $a_len = length $A;
     if ($a_len == 0) {
-        $payload = '';
+        return '';
     }
     if ($a_len <= 0xFEFF) {
         $payload = pack 'n', $a_len; 
